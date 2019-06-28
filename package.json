@@ -15,5 +15,13 @@
   "bugs": {
     "url": "https://github.com/jazzpeh/devops-nodejs/issues"
   },
-  "homepage": "https://github.com/jazzpeh/devops-nodejs#readme"
+  "homepage": "https://github.com/jazzpeh/devops-nodejs#readme",
+  "dependencies": {
+    "aws-sdk": "^2.484.0",
+    "config": "^3.1.0"
+  },
+  "devDependencies": {
+    "jest": "^24.8.0",
+    "nodemon": "^1.19.1"
+  }
 }
