@@ -57,6 +57,7 @@ class Program {
     this.init();
 
     if (!this.verifyOS()) return;
+    if (!this.verifyAWSCredential()) return;
   }
 
   /**
@@ -82,6 +83,23 @@ class Program {
     }
     
     console.log(logSymbols.success, `Supported OS [${this.os}] found.`);
+    return true;
+  }
+
+  /**
+   * Verify if AWS credential file exists
+   */
+  verifyAWSCredential() {
+    console.log('Checking for AWS credentials...');
+
+    const credentialFile = CredentialsFilePath[this.os];
+
+    if (!fs.existsSync(credentialFile)) {
+      console.log(logSymbols.error, errorConsoleMsg(`Credentials file for AWS not found at default location [${credentialFile}] . Exiting program...`));
+      return false;
+    }
+
+    console.log(logSymbols.success, `Credential file found at [${credentialFile}].`);
     return true;
   }
 }
