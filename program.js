@@ -109,6 +109,7 @@ class Program {
    */
   checkProfile() {
     console.log('Checking for AWS credentials profile name...');
+    updateProfile(this.profile);
     console.log(logSymbols.success, `AWS profile set as ${colors.cyan(`[${this.profile}]`)}.`);
   };  
 }
