@@ -38,16 +38,22 @@ class Program {
     this.profile = '';
 
     /**
-     * Project directory to deploy
+     * Directory of the project
      * @type {string}
      */
     this.projectDir = '';
 
     /**
-     * Specify if there's any folder to go into to deploy
+     * Specify if there's any folder to go into
      * @type {string}
      */
     this.projectFolder = '';
+
+    /**
+     * Directory where all files are kept to deploy
+     * @type {string}
+     */
+    this.deployDir = '';
   }
 
   /**
@@ -59,6 +65,7 @@ class Program {
     if (!this.verifyOS()) return;
     if (!this.verifyAWSCredential()) return;
     this.checkProfile();
+    this.checkProjectDir();
   }
 
   /**
@@ -112,6 +119,15 @@ class Program {
     updateProfile(this.profile);
     console.log(logSymbols.success, `AWS profile set as ${colors.cyan(`[${this.profile}]`)}.`);
   };  
+
+  /**
+   * Request for absolute project path
+   */
+  checkProjectDir() {
+    console.log('Checking for project directory to deploy...');
+    this.deployDir = this.projectDir + (this.projectFolder ? `/${this.projectFolder}` : '');
+    console.log(logSymbols.success, `Project directory set as ${colors.cyan(`[${this.deployDir}]`)}.`);
+  }
 }
 
 module.exports = Program;

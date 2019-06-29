@@ -101,4 +101,39 @@ describe('Program', () => {
 
     });
   });
+
+  /**
+   * 4. checkProjectDir
+   */
+  describe('checkProjectDir', () => {
+    let env;
+    const projectDir = `${__dirname}/hello_world`;
+    const projectFolder = 'build'
+
+    beforeEach(() => {
+      env = pmock.env({
+        DIR: projectDir,
+        FOLDER: projectFolder
+      });
+    });
+
+    afterEach(() => {
+      env.reset();
+    });
+
+    it('should show `deployDir` by appending `projectDir` and `projectFolder`', () => {
+      program.init();
+      program.checkProjectDir();
+      expect(program.deployDir).toEqual(`${projectDir}/${projectFolder}`);
+    });
+
+    it('show show `deployDir` with same value as `projectDir` if `projectFolder` is empty', () => {
+      env = pmock.env({
+        DIR: projectDir
+      });
+      program.init();
+      program.checkProjectDir();
+      expect(program.deployDir).toEqual(projectDir);
+    });
+  });
 });
