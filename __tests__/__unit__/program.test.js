@@ -64,4 +64,41 @@ describe('Program', () => {
       expect(program.projectFolder).toEqual('');
     });
   });
+
+  /**
+   * 3. verifyOS
+   */
+  describe('verifyOS', () => {
+    let platform;
+
+    beforeEach(() => {
+      platform = pmock.platform(process.platform);
+    });
+
+    afterEach(() => {
+      platform.reset();
+    });
+
+    it('should set `os` as per current platform OS (OSX)', () => {
+      const os = 'darwin';
+      platform = pmock.platform(os);
+      expect(program.verifyOS()).toEqual(true);
+      expect(program.os).toEqual(program.platformOS[os]);
+    });
+
+    it('should set `os` as per current platform OS (WIN)', () => {
+      const os = 'win32';
+      platform = pmock.platform(os);
+      expect(program.verifyOS()).toEqual(true);
+      expect(program.os).toEqual(program.platformOS[os]);
+    });
+
+    it('should return error if `os` is not supported', () => {
+      const os = 'freebsd';
+      platform = pmock.platform(os);
+      expect(program.verifyOS()).toEqual(false);
+      expect(program.os).toBeUndefined();
+
+    });
+  });
 });

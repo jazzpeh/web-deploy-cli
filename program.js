@@ -55,6 +55,8 @@ class Program {
    */
   async run() {
     this.init();
+
+    if (!this.verifyOS()) return;
   }
 
   /**
@@ -64,6 +66,23 @@ class Program {
     this.profile = process.env.PROFILE || 'default';
     this.projectDir = process.env.DIR || process.cwd();
     this.projectFolder = process.env.FOLDER || '';
+  }
+
+  /**
+   * Verify OS platform
+   */
+  verifyOS() {
+    console.log('Verifying system OS...');
+  
+    this.os = this.platformOS[process.platform];
+    
+    if (!this.os) {
+      console.log(logSymbols.error, errorConsoleMsg('Unsupported OS found. Exiting program...'));
+      return false;
+    }
+    
+    console.log(logSymbols.success, `Supported OS [${this.os}] found.`);
+    return true;
   }
 }
 
