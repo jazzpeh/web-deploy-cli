@@ -1,8 +1,18 @@
 
 const AWS = require('aws-sdk');
 const fs = require('fs');
-const path = require('path');
+const os = require('os');
 const { ConsoleFontColors } = require('./constants');
+
+/**
+ * Credentials file path based on OS
+ * @enum {string}
+ */
+const CredentialsFilePath = {
+  WINDOWS: `${os.homedir()}\.aws\credentials`,
+  OSX: `${os.homedir()}/.aws/credentials`,
+  LINUX: `${os.homedir()}/.aws/credentials`
+};
 
 /**
  * Convert absolute directory path to files to bucket key
@@ -38,7 +48,18 @@ const uploadDirToBucket = async (bucketName, filePath) => {
   }
 };
 
+/**
+ * Update AWS profile name in credentials configuration
+ * @param {*} profile 
+ */
+const updateProfile = profile => {
+  const credentials = new AWS.SharedIniFileCredentials({ profile });
+  AWS.config.credentials = credentials;
+};
+
 module.exports = {
+  CredentialsFilePath,
   convertToBucketKey,
-  uploadDirToBucket
+  uploadDirToBucket,
+  updateProfile
 };
