@@ -2,7 +2,7 @@ const fs = require('fs');
 const readline = require('readline');
 const logSymbols = require('log-symbols');
 const { CredentialsFilePath, updateProfile } = require('./util/aws');
-const { errorConsoleMsg } = require('./util/common');
+const colors = require('colors/safe');
 
 class Program {
   constructor() {
@@ -58,6 +58,7 @@ class Program {
 
     if (!this.verifyOS()) return;
     if (!this.verifyAWSCredential()) return;
+    this.checkProfile();
   }
 
   /**
@@ -78,11 +79,11 @@ class Program {
     this.os = this.platformOS[process.platform];
     
     if (!this.os) {
-      console.log(logSymbols.error, errorConsoleMsg('Unsupported OS found. Exiting program...'));
+      console.log(logSymbols.error, colors.red('Unsupported OS found. Exiting program...'));
       return false;
     }
     
-    console.log(logSymbols.success, `Supported OS [${this.os}] found.`);
+    console.log(logSymbols.success, `Supported OS ${colors.cyan(`[${this.os}]`)} found.`);
     return true;
   }
 
@@ -95,13 +96,21 @@ class Program {
     const credentialFile = CredentialsFilePath[this.os];
 
     if (!fs.existsSync(credentialFile)) {
-      console.log(logSymbols.error, errorConsoleMsg(`Credentials file for AWS not found at default location [${credentialFile}] . Exiting program...`));
+      console.log(logSymbols.error, colors.red(`Credentials file for AWS not found at default location [${credentialFile}] . Exiting program...`));
       return false;
     }
 
-    console.log(logSymbols.success, `Credential file found at [${credentialFile}].`);
+    console.log(logSymbols.success, `Credential file found at ${colors.cyan(`[${credentialFile}]`)}.`);
     return true;
   }
+
+  /**
+   * Check if AWS profile name is set properly
+   */
+  checkProfile() {
+    console.log('Checking for AWS credentials profile name...');
+    console.log(logSymbols.success, `AWS profile set as ${colors.cyan(`[${this.profile}]`)}.`);
+  };  
 }
 
 module.exports = Program;

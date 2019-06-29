@@ -1,5 +1,5 @@
+const colors = require('colors');
 const Program = require('./program');
-const { errorConsoleMsg } = require('./util/common');
 
 const newProgram = new Program();
 
@@ -7,7 +7,7 @@ const newProgram = new Program();
   try {
     await newProgram.run();
   } catch (err) {
-    console.log(errorConsoleMsg('Unable to continue operation. Terminating program...'), err);
+    console.log(colors.red('Unable to continue operation. Terminating program...'), err);
     process.exit(1);
   }
 })();

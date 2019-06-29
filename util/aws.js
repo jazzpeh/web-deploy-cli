@@ -2,7 +2,8 @@
 const AWS = require('aws-sdk');
 const fs = require('fs');
 const os = require('os');
-const { ConsoleFontColors } = require('./constants');
+const colors = require('colors/safe');
+const logSymbols = require('log-symbols');
 
 /**
  * Credentials file path based on OS
@@ -42,9 +43,9 @@ const uploadDirToBucket = async (bucketName, filePath) => {
 
   try {
     const result = await s3.upload(params);
-    console.log(ConsoleFontColors.GREEN, `Successfully uploaded file from ${dirPath} to ${result.location}`);
+    console.log(logSymbols.success, `Successfully uploaded file from ${dirPath} to ${result.location}`);
   } catch (err) {
-    console.log(ConsoleFontColors.RED, 'Error', err);
+    console.log(colors.red(`Error ${err}`));
   }
 };
 
