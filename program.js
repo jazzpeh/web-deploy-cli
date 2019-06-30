@@ -2,6 +2,7 @@ const fs = require('fs');
 const readline = require('readline');
 const logSymbols = require('log-symbols');
 const { CredentialsFilePath, updateProfile } = require('./util/aws');
+const { readDir } = require('./util/common');
 const colors = require('colors/safe');
 
 class Program {
@@ -54,6 +55,12 @@ class Program {
      * @type {string}
      */
     this.deployDir = '';
+
+    /**
+     * Stores all files in a directory and readies it for deployment
+     * @type {Array<string>}
+     */
+    this.files = [];
   }
 
   /**
@@ -66,6 +73,7 @@ class Program {
     if (!this.verifyAWSCredential()) return;
     this.checkProfile();
     this.checkProjectDir();
+    this.readFiles();
   }
 
   /**
@@ -127,6 +135,15 @@ class Program {
     console.log('Checking for project directory to deploy...');
     this.deployDir = this.projectDir + (this.projectFolder ? `/${this.projectFolder}` : '');
     console.log(logSymbols.success, `Project directory set as ${colors.cyan(`[${this.deployDir}]`)}.`);
+  }
+
+  /**
+   * Get all files and folders structure of the deploy directory
+   */
+  readFiles() {
+    console.log('Reading all files in deploy directory...');
+    this.files = readDir(this.projectDir);
+    console.log(logSymbols.success, `Found ${colors.cyan(`[${this.files.length}]`)} files.`);
   }
 }
 
