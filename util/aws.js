@@ -2,8 +2,6 @@
 const AWS = require('aws-sdk');
 const fs = require('fs');
 const os = require('os');
-const colors = require('colors/safe');
-const logSymbols = require('log-symbols');
 
 /**
  * Credentials file path based on OS
@@ -31,7 +29,7 @@ const convertToBucketKey = (dirPath, filePath) => {
  * @param {string} bucketName 
  * @param {string} filePath 
  */
-const uploadDirToBucket = async (bucketName, filePath) => {
+const uploadFileToBucket = async (bucketName, filePath, successCallback, errorCallback) => {
   const s3 = new AWS.S3();
 
   const params = {
@@ -42,10 +40,12 @@ const uploadDirToBucket = async (bucketName, filePath) => {
   };
 
   try {
-    const result = await s3.upload(params);
-    console.log(logSymbols.success, `Successfully uploaded file from ${dirPath} to ${result.location}`);
+    const data = await s3.upload(params);
+    if (typeof successCallback === 'function') successCallback(data);
+    return true;
   } catch (err) {
-    console.log(colors.red(`Error ${err}`));
+    if (typeof errorCallback === 'function') errorCallback(err);
+    return false;
   }
 };
 
@@ -61,6 +61,6 @@ const updateProfile = profile => {
 module.exports = {
   CredentialsFilePath,
   convertToBucketKey,
-  uploadDirToBucket,
+  uploadFileToBucket,
   updateProfile
 };

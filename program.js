@@ -1,7 +1,7 @@
 const fs = require('fs');
 const readline = require('readline');
 const logSymbols = require('log-symbols');
-const { CredentialsFilePath, updateProfile } = require('./util/aws');
+const awsUtil = require('./util/aws');
 const { readDir } = require('./util/common');
 const colors = require('colors/safe');
 
@@ -61,6 +61,12 @@ class Program {
      * @type {Array<string>}
      */
     this.files = [];
+
+    /**
+     * S3 bucket name
+     * @type {string} 
+     */
+    this.bucket = '';
   }
 
   /**
@@ -69,17 +75,20 @@ class Program {
   async run() {
     this.init();
 
-    if (!this.verifyOS()) return;
-    if (!this.verifyAWSCredential()) return;
+    if (!this.verifyOS()) throw '';
+    if (!this.verifyAWSCredential()) return '';
     this.checkProfile();
     this.checkProjectDir();
+    if (!this.checkBucket()) throw '';
     this.readFiles();
+    if (!await this.deploy()) throw '';
   }
 
   /**
    * Initialise, set process variables
    */
   init() {
+    this.bucket = process.env.BUCKET || '';
     this.profile = process.env.PROFILE || 'default';
     this.projectDir = process.env.DIR || process.cwd();
     this.projectFolder = process.env.FOLDER || '';
@@ -108,7 +117,7 @@ class Program {
   verifyAWSCredential() {
     console.log('Checking for AWS credentials...');
 
-    const credentialFile = CredentialsFilePath[this.os];
+    const credentialFile = awsUtil.CredentialsFilePath[this.os];
 
     if (!fs.existsSync(credentialFile)) {
       console.log(logSymbols.error, colors.red(`Credentials file for AWS not found at default location [${credentialFile}] . Exiting program...`));
@@ -124,7 +133,7 @@ class Program {
    */
   checkProfile() {
     console.log('Checking for AWS credentials profile name...');
-    updateProfile(this.profile);
+    awsUtil.updateProfile(this.profile);
     console.log(logSymbols.success, `AWS profile set as ${colors.cyan(`[${this.profile}]`)}.`);
   };  
 
@@ -137,6 +146,16 @@ class Program {
     console.log(logSymbols.success, `Project directory set as ${colors.cyan(`[${this.deployDir}]`)}.`);
   }
 
+
+  /**
+   * Check bucket name
+   */
+  checkBucket() {
+    console.log('Checking for AWS S3 bucket name...');
+    if (!this.bucket) return false;
+    console.log(logSymbols.success, `Bucket set as ${colors.cyan(`[${this.bucket}]`)}.`);
+  }
+
   /**
    * Get all files and folders structure of the deploy directory
    */
@@ -144,6 +163,34 @@ class Program {
     console.log('Reading all files in deploy directory...');
     this.files = readDir(this.projectDir);
     console.log(logSymbols.success, `Found ${colors.cyan(`[${this.files.length}]`)} files.`);
+  }
+
+  /**
+   * 
+   */
+  async deploy() {
+    console.log('Starting deployment...');
+
+    const uploads = this.files.map(file => 
+      awsUtil.uploadFileToBucket(this.bucket, file, (data) => {
+        console.log(logSymbols.info, `Successfully uploaded file from ${colors.cyan(`[${file}]`)} to ${colors.cyan(`[${data.location}]`)}`);
+      }, (err) => {
+        console.log(colors.red(`Error uploading file from [${file}].`));
+        console.log(colors.red(err));
+      })
+    );
+   
+    const results = await Promise.all(uploads);
+    const successCount = results.filter(r => r).length;
+    const errorCount = results.filter(r => !r).length;
+
+    if (successCount === this.files.length) {
+      console.log(logSymbols.success, `All ${colors.cyan(`[${successCount}]`)} files are successfully deployed.`);
+      return true;
+    } else {
+      console.log(colors.red(`Error uploading [${errorCount}] file(s).`));
+      return false;
+    }
   }
 }
 
