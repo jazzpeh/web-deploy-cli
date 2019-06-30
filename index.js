@@ -7,7 +7,8 @@ const newProgram = new Program();
   try {
     await newProgram.run();
   } catch (err) {
-    console.log(colors.red('Unable to continue operation. Terminating program...'), err);
+    console.log(colors.red('Unable to continue operation. Terminating program...'), colors.red(err));
+  } finally {
     process.exit(1);
   }
 })();

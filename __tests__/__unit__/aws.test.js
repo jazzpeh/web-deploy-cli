@@ -17,7 +17,7 @@ describe('AWS Utilites', () => {
    */
   describe('convertToBucketKey', () => {
     it('converts the absolute directory value to relative value', () => {
-      expect(convertToBucketKey(dirPath, filePath)).toEqual('assets/image.jpg');
+      expect(convertToBucketKey(filePath, dirPath)).toEqual('assets/image.jpg');
     });
   });
 });

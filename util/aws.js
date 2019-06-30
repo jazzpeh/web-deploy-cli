@@ -20,7 +20,7 @@ const CredentialsFilePath = {
  * @param {string} dirPath 
  * @param {string} filePath
  */
-const convertToBucketKey = (dirPath, filePath) => {
+const convertToBucketKey = (filePath, dirPath) => {
   return filePath.replace(dirPath, '').replace(/^\/|\/$/g, '');
 };
 
@@ -29,24 +29,31 @@ const convertToBucketKey = (dirPath, filePath) => {
  * @param {string} bucketName 
  * @param {string} filePath 
  */
-const uploadFileToBucket = async (bucketName, filePath, successCallback, errorCallback) => {
+const uploadFileToBucket = (bucketName, filePath, dirPath, successCallback, errorCallback) => {
   const s3 = new AWS.S3();
 
   const params = {
     Bucket: bucketName,
     Body: fs.createReadStream(filePath),
-    Key: convertToBucketKey(filePath),
+    Key: convertToBucketKey(filePath, dirPath),
     ACL: 'public-read'
   };
 
-  try {
-    const data = await s3.upload(params);
-    if (typeof successCallback === 'function') successCallback(data);
-    return true;
-  } catch (err) {
-    if (typeof errorCallback === 'function') errorCallback(err);
-    return false;
-  }
+  return new Promise((resolve, reject) => {
+    s3.upload(params, (err, data) => {
+      if (err) {
+        if (typeof errorCallback === 'function') errorCallback(err);
+        reject(false);
+        return;
+      }
+
+      if (data && typeof successCallback === 'function') {
+        successCallback(data);
+      }
+
+      resolve(true);
+    });
+  });
 };
 
 /**

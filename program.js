@@ -154,6 +154,7 @@ class Program {
     console.log('Checking for AWS S3 bucket name...');
     if (!this.bucket) return false;
     console.log(logSymbols.success, `Bucket set as ${colors.cyan(`[${this.bucket}]`)}.`);
+    return true;
   }
 
   /**
@@ -161,7 +162,7 @@ class Program {
    */
   readFiles() {
     console.log('Reading all files in deploy directory...');
-    this.files = readDir(this.projectDir);
+    this.files = readDir(this.deployDir);
     console.log(logSymbols.success, `Found ${colors.cyan(`[${this.files.length}]`)} files.`);
   }
 
@@ -172,8 +173,8 @@ class Program {
     console.log('Starting deployment...');
 
     const uploads = this.files.map(file => 
-      awsUtil.uploadFileToBucket(this.bucket, file, (data) => {
-        console.log(logSymbols.info, `Successfully uploaded file from ${colors.cyan(`[${file}]`)} to ${colors.cyan(`[${data.location}]`)}`);
+      awsUtil.uploadFileToBucket(this.bucket, file, this.deployDir, (data) => {
+        console.log(logSymbols.info, `Successfully uploaded file to ${colors.cyan(`[${data.Location}]`)}`);
       }, (err) => {
         console.log(colors.red(`Error uploading file from [${file}].`));
         console.log(colors.red(err));
