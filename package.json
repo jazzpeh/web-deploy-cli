@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "jest": "^24.8.0",
+    "mock-fs": "^4.10.1",
     "nodemon": "^1.19.1",
     "pmock": "^0.2.3"
   }
