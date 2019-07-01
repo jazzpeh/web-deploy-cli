@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/jazzpeh/web-deploy-cli.svg?branch=master)](https://travis-ci.org/jazzpeh/web-deploy-cli)
+[![npm version](https://badge.fury.io/js/web-deploy-cli.svg)](https://badge.fury.io/js/web-deploy-cli)
 
 # Web Deploy CLI
 
