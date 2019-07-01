@@ -179,7 +179,7 @@ class Program {
       console.log(logSymbols.success, `All ${colors.cyan(`[${successCount}]`)} files are successfully deployed.`);
       return true;
     } else {
-      console.log(colors.red(`Error uploading [${errorCount}] file(s).`));
+      console.log(logSymbols.error, colors.red(`Error uploading [${errorCount}] file(s).`));
       return false;
     }
   }

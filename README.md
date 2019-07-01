@@ -14,7 +14,8 @@ Currently it supports the following cloud deployment service:
 2. [Installation](#installation)
 3. [CLI Commands](#cli-commands)
     * [Deploy to AWS S3](#deploy-to-aws)
-3. [Small Print](#small-print)
+3. [More Information](#more-information)
+    * [Small Print](#small-print)
 4. [MIT License](#mit-license)
 
 ## Dependencies
@@ -42,10 +43,28 @@ npm install web-deploy-cli  -g
 You can use this command to deploy your static web application to AWS S3 bucket:
 
 ```
-web-deploy --bucket=<your_bucket_name> --profile=<your_aws_credential_profile_name> --dir=<absolute_path_to_your_project_directory> --folder=<>
+web-deploy --args=<values>
 ```
 
-## Small Print
+Arguments allowed are:
+
+| Argument | Type | Description |
+|--------|--------|--------|
+| `bucket` | String | The bucket name for AWS S3
+| `profile`| String? | The profile name for AWS credentials (if nothing is passed, `profile` will be set to `default`)
+| `dir`| String | The absolute path to your project directory (if nothing is passed, it will use the current directory of the terminal process)
+| `folder` | String? | Specify the folder that contains the built static web application `i.e. build`
+
+Example usage of arguments:
+
+```
+web-deploy --bucket=john-doe-bucket --dir=/Users/johndoe/Projects/hello_world --folder=build
+```
+
+
+## More Information
+
+### Small Print
 
 Author: Jazz Peh &lt;jazzpeh@gmail.com&gt; &copy; 2019
 
