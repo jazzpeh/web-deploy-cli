@@ -1,23 +1,26 @@
 {
-  "name": "devops-nodejs",
+  "name": "web-deploy-cli",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Easier way to deploy for web",
+  "main": "cli.js",
   "scripts": {
-    "test": "jest --watchAll",
-    "start": "nodemon index.js",
-    "deploy": "node index.js"
+    "test": "NODE_ENV=test jest --watchAll",
+    "start": "nodemon cli.js",
+    "deploy": "node cli.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jazzpeh/devops-nodejs.git"
+    "url": "git+https://github.com/jazzpeh/web-deploy-cli.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Jazz Peh",
+  "license": "MIT",
+  "bin": {
+    "web-deploy": "./cli.js"
+  },
   "bugs": {
-    "url": "https://github.com/jazzpeh/devops-nodejs/issues"
+    "url": "https://github.com/jazzpeh/web-deploy-cli/issues"
   },
-  "homepage": "https://github.com/jazzpeh/devops-nodejs#readme",
+  "homepage": "https://github.com/jazzpeh/web-deploy-cli#readme",
   "dependencies": {
     "aws-sdk": "^2.484.0",
     "colors": "^1.3.3",
