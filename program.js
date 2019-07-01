@@ -1,5 +1,4 @@
 const fs = require('fs');
-const readline = require('readline');
 const logSymbols = require('log-symbols');
 const awsUtil = require('./util/aws');
 const { readDir } = require('./util/common');
@@ -8,15 +7,6 @@ const argv = require('yargs').argv;
 
 class Program {
   constructor() {
-    /**
-     * Readline console
-     * @type {readline}
-     */
-    this.rl = readline.createInterface({
-      input: process.stdin,
-      output: process.stdout
-    });
-
     /**
      * Platform OS names
      * @type {Object}
