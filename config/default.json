@@ -1,0 +1,14 @@
+{
+  "tests": {
+    "integration": {
+      "aws": {
+        "bucket": {
+          "name": "",
+          "url": ""
+        },
+        "dirPath": "" ,
+        "fileName": ""
+       }
+    }
+  }
+}

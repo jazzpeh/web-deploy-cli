@@ -8,7 +8,7 @@ describe('AWS Utilites', () => {
   let dirPath = '';
 
   beforeEach(() => {
-    dirPath = '/Users/jazzpeh/Documents/Workspaces/project/build';
+    dirPath = '/Users/johndoe/Documents/Workspaces/project/build';
     filePath = `${dirPath}/assets/image.jpg`;
   });
 
