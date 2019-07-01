@@ -14,7 +14,8 @@ Currently it supports the following cloud deployment service:
 2. [Installation](#installation)
 3. [CLI Commands](#cli-commands)
     * [Deploy to AWS S3](#deploy-to-aws)
-3. [Small Print](#small-print)
+3. [More Information](#more-information)
+    * [Small Print](#small-print)
 4. [MIT License](#mit-license)
 
 ## Dependencies
@@ -45,7 +46,9 @@ You can use this command to deploy your static web application to AWS S3 bucket:
 web-deploy --bucket=<your_bucket_name> --profile=<your_aws_credential_profile_name> --dir=<absolute_path_to_your_project_directory> --folder=<>
 ```
 
-## Small Print
+## More Information
+
+### Small Print
 
 Author: Jazz Peh &lt;jazzpeh@gmail.com&gt; &copy; 2019
 
