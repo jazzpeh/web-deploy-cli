@@ -1,21 +1,12 @@
 const fs = require('fs');
-const readline = require('readline');
 const logSymbols = require('log-symbols');
 const awsUtil = require('./util/aws');
 const { readDir } = require('./util/common');
 const colors = require('colors/safe');
+const argv = require('yargs').argv;
 
 class Program {
   constructor() {
-    /**
-     * Readline console
-     * @type {readline}
-     */
-    this.rl = readline.createInterface({
-      input: process.stdin,
-      output: process.stdout
-    });
-
     /**
      * Platform OS names
      * @type {Object}
@@ -85,13 +76,13 @@ class Program {
   }
 
   /**
-   * Initialise, set process variables
+   * Initialise, set argument variables
    */
   init() {
-    this.bucket = process.env.BUCKET || '';
-    this.profile = process.env.PROFILE || 'default';
-    this.projectDir = process.env.DIR || process.cwd();
-    this.projectFolder = process.env.FOLDER || '';
+    this.bucket = argv.bucket || '';
+    this.profile = argv.profile || 'default';
+    this.projectDir = argv.dir || process.cwd();
+    this.projectFolder = argv.folder || '';
   }
 
   /**
@@ -154,6 +145,7 @@ class Program {
     console.log('Checking for AWS S3 bucket name...');
     if (!this.bucket) return false;
     console.log(logSymbols.success, `Bucket set as ${colors.cyan(`[${this.bucket}]`)}.`);
+    return true;
   }
 
   /**
@@ -161,22 +153,21 @@ class Program {
    */
   readFiles() {
     console.log('Reading all files in deploy directory...');
-    this.files = readDir(this.projectDir);
+    this.files = readDir(this.deployDir);
     console.log(logSymbols.success, `Found ${colors.cyan(`[${this.files.length}]`)} files.`);
   }
 
   /**
-   * 
+   * Deploy files in concurrency mode
    */
   async deploy() {
     console.log('Starting deployment...');
 
     const uploads = this.files.map(file => 
-      awsUtil.uploadFileToBucket(this.bucket, file, (data) => {
-        console.log(logSymbols.info, `Successfully uploaded file from ${colors.cyan(`[${file}]`)} to ${colors.cyan(`[${data.location}]`)}`);
-      }, (err) => {
-        console.log(colors.red(`Error uploading file from [${file}].`));
-        console.log(colors.red(err));
+      awsUtil.uploadFileToBucket(this.bucket, file, this.deployDir, (data) => {
+        console.log(colors.cyan('*'), `${data.location}`, logSymbols.success);
+      }, () => {
+        console.log(colors.red(`* ${file}`, logSymbols.error));
       })
     );
    
@@ -188,7 +179,7 @@ class Program {
       console.log(logSymbols.success, `All ${colors.cyan(`[${successCount}]`)} files are successfully deployed.`);
       return true;
     } else {
-      console.log(colors.red(`Error uploading [${errorCount}] file(s).`));
+      console.log(logSymbols.error, colors.red(`Error uploading [${errorCount}] file(s).`));
       return false;
     }
   }

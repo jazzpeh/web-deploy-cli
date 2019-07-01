@@ -2,6 +2,7 @@
 const AWS = require('aws-sdk');
 const fs = require('fs');
 const os = require('os');
+const mime = require('mime-types')
 
 /**
  * Credentials file path based on OS
@@ -20,7 +21,7 @@ const CredentialsFilePath = {
  * @param {string} dirPath 
  * @param {string} filePath
  */
-const convertToBucketKey = (dirPath, filePath) => {
+const convertToBucketKey = (filePath, dirPath) => {
   return filePath.replace(dirPath, '').replace(/^\/|\/$/g, '');
 };
 
@@ -29,24 +30,32 @@ const convertToBucketKey = (dirPath, filePath) => {
  * @param {string} bucketName 
  * @param {string} filePath 
  */
-const uploadFileToBucket = async (bucketName, filePath, successCallback, errorCallback) => {
+const uploadFileToBucket = (bucketName, filePath, dirPath, successCallback, errorCallback) => {
   const s3 = new AWS.S3();
-
+  const location = convertToBucketKey(filePath, dirPath);
   const params = {
     Bucket: bucketName,
     Body: fs.createReadStream(filePath),
-    Key: convertToBucketKey(filePath),
-    ACL: 'public-read'
+    Key: location,
+    ACL: 'public-read',
+    ContentType: mime.lookup(filePath) || 'application/octet-stream'
   };
 
-  try {
-    const data = await s3.upload(params);
-    if (typeof successCallback === 'function') successCallback(data);
-    return true;
-  } catch (err) {
-    if (typeof errorCallback === 'function') errorCallback(err);
-    return false;
-  }
+  return new Promise((resolve, reject) => {
+    s3.upload(params, (err, data) => {
+      if (err) {
+        if (typeof errorCallback === 'function') errorCallback(err);
+        reject(false);
+        return;
+      }
+
+      if (data && typeof successCallback === 'function') {
+        successCallback({ ...data, location });
+      }
+
+      resolve(true);
+    });
+  });
 };
 
 /**

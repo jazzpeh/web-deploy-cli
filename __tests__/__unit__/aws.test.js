@@ -8,7 +8,7 @@ describe('AWS Utilites', () => {
   let dirPath = '';
 
   beforeEach(() => {
-    dirPath = '/Users/jazzpeh/Documents/Workspaces/project/build';
+    dirPath = '/Users/johndoe/Documents/Workspaces/project/build';
     filePath = `${dirPath}/assets/image.jpg`;
   });
 
@@ -17,7 +17,7 @@ describe('AWS Utilites', () => {
    */
   describe('convertToBucketKey', () => {
     it('converts the absolute directory value to relative value', () => {
-      expect(convertToBucketKey(dirPath, filePath)).toEqual('assets/image.jpg');
+      expect(convertToBucketKey(filePath, dirPath)).toEqual('assets/image.jpg');
     });
   });
 });

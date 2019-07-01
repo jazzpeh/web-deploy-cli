@@ -13,73 +13,7 @@ describe('Program', () => {
   });
 
   /**
-   * 2. init()
-   */
-  describe('init', () => {
-    let env, cwd;
-    const projectDir = `${__dirname}/hello_world`;
-
-    beforeEach(() => {
-      env = pmock.env({});
-      cwd = pmock.cwd(projectDir);
-    });
-
-    afterEach(() => {
-      env.reset();
-      cwd.reset();
-    });
-
-    it('should set `profile` based on environment variable `PROFILE`', () => {
-      const profile = 'HelloWorld';
-      restore = pmock.env({ PROFILE: profile });
-      program.init();
-      expect(program.profile).toEqual(profile);
-    });
-
-    it('should set `profile` to `default` if environment variable `PROFILE` is not available', () => {
-      program.init();
-      expect(program.profile).toEqual('default');
-    });
-
-    it('should set `projectDir` based on environment variable `DIR`', () => {
-      const dir = `${projectDir}_env_var`;
-      restore = pmock.env({ DIR: dir });
-      program.init();
-      expect(program.projectDir).toEqual(dir);
-    });
-
-    it('should set `projectDir` automatically based on process if environment variable `DIR` is not available', () => {
-      program.init();
-      expect(program.projectDir).toEqual(projectDir);
-    });
-
-    it('should set `projectFolder` based on environment variable `FOLDER`', () => {
-      const folder = 'build'
-      restore = pmock.env({ FOLDER: folder });
-      program.init();
-      expect(program.projectFolder).toEqual(folder);
-    });
-
-    it('should set `projectFolder` to empty string if environment variable `FOLDER` is not available', () => {
-      program.init();
-      expect(program.projectFolder).toEqual('');
-    });
-
-    it('should set `bucket` based on environment variable `BUCKET`', () => {
-      const bucket = 'hello_world_bucket'
-      restore = pmock.env({ BUCKET: bucket });
-      program.init();
-      expect(program.bucket).toEqual(bucket);
-    });
-
-    it('should set `bucket` to empty string if environment variable `BUCKET` is not available', () => {
-      program.init();
-      expect(program.bucket).toEqual('');
-    });
-  });
-
-  /**
-   * 3. verifyOS
+   * 2. verifyOS
    */
   describe('verifyOS', () => {
     let platform;
@@ -116,42 +50,31 @@ describe('Program', () => {
   });
 
   /**
-   * 4. checkProjectDir
+   * 3. checkProjectDir
    */
   describe('checkProjectDir', () => {
-    let env;
     const projectDir = `${__dirname}/hello_world`;
     const projectFolder = 'build'
 
     beforeEach(() => {
-      env = pmock.env({
-        DIR: projectDir,
-        FOLDER: projectFolder
-      });
-    });
-
-    afterEach(() => {
-      env.reset();
+      program.projectDir = projectDir;
+      program.projectFolder = projectFolder
     });
 
     it('should show `deployDir` by appending `projectDir` and `projectFolder`', () => {
-      program.init();
       program.checkProjectDir();
       expect(program.deployDir).toEqual(`${projectDir}/${projectFolder}`);
     });
 
     it('show show `deployDir` with same value as `projectDir` if `projectFolder` is empty', () => {
-      env = pmock.env({
-        DIR: projectDir
-      });
-      program.init();
+      program.projectFolder = '';
       program.checkProjectDir();
       expect(program.deployDir).toEqual(projectDir);
     });
   });
 
   /**
-   * 5. deploy
+   * 4. deploy
    */
   describe('deploy', () => {
     beforeEach(() => {
