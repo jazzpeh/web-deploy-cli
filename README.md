@@ -1,6 +1,51 @@
 [![Build Status](https://travis-ci.org/jazzpeh/web-deploy-cli.svg?branch=master)](https://travis-ci.org/jazzpeh/web-deploy-cli)
 
-### Small print
+# Web Deploy CLI
+
+This package makes it easy to deploy static web applications. It does this by exposing a small set of easy-to-use CLI commands and arguments to quickly  deploy your entire project. 
+
+Currently it supports the following cloud deployment service:
+* AWS S3 Static Website Hosting
+
+## Contents
+
+1. [Dependencies](#dependencies)
+   * [node](#node)
+2. [Installation](#installation)
+3. [CLI Commands](#cli-commands)
+    * [Deploy to AWS S3](#deploy-to-aws)
+3. [Small Print](#small-print)
+4. [MIT License](#mit-license)
+
+## Dependencies
+
+### Node
+
+This package requires **Node >= 8.0**.
+
+You can install [Node.js](http://www.nodejs.org/) via the package provided on [their site](http://www.nodejs.org).
+Installing node will also install the [Node Package Manager](https://github.com/npm/npm) (NPM) to download and
+install node modules.
+
+## Installation
+
+Installing Build Tools as a global module will give you command-line access to all tasks available.
+
+You can install globally by typing the following in your terminal:
+
+```
+npm install web-deploy-cli  -g
+```
+
+## Deploy to AWS S3
+
+You can use this command to deploy your static web application to AWS S3 bucket:
+
+```
+web-deploy --bucket=<your_bucket_name> --profile=<your_aws_credential_profile_name> --dir=<absolute_path_to_your_project_directory> --folder=<>
+```
+
+## Small Print
 
 Author: Jazz Peh &lt;jazzpeh@gmail.com&gt; &copy; 2019
 
