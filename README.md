@@ -43,8 +43,24 @@ npm install web-deploy-cli  -g
 You can use this command to deploy your static web application to AWS S3 bucket:
 
 ```
-web-deploy --bucket=<your_bucket_name> --profile=<your_aws_credential_profile_name> --dir=<absolute_path_to_your_project_directory> --folder=<>
+web-deploy --args=<values>
 ```
+
+Arguments allowed are:
+
+| Argument | Type | Description |
+|--------|--------|--------|
+| `bucket` | String | The bucket name for AWS S3
+| `profile`| String? | The profile name for AWS credentials (if nothing is passed, `profile` will be set to `default`)
+| `dir`| String | The absolute path to your project directory (if nothing is passed, it will use the current directory of the terminal process)
+| `folder` | String? | Specify the folder that contains the built static web application `i.e. build`
+
+Example usage of arguments:
+
+```
+web-deploy --bucket=john-doe-bucket --dir=/Users/johndoe/Projects/hello_world --folder=build
+```
+
 
 ## More Information
 
