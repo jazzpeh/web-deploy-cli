@@ -5,7 +5,7 @@
   "main": "cli.js",
   "scripts": {
     "test": "NODE_ENV=test jest --watchAll",
-    "unit": "jest -c ./jest/jest.config.unit.js",
+    "unit": "jest -c jest.config.unit.js",
     "integration": "NODE_ENV=test jest  -c jest.config.integration.js",
     "start": "nodemon cli.js",
     "deploy": "node cli.js"
