@@ -4,6 +4,7 @@ const logSymbols = require('log-symbols');
 const awsUtil = require('./util/aws');
 const { readDir } = require('./util/common');
 const colors = require('colors/safe');
+const argv = require('yargs').argv;
 
 class Program {
   constructor() {
@@ -85,13 +86,13 @@ class Program {
   }
 
   /**
-   * Initialise, set process variables
+   * Initialise, set argument variables
    */
   init() {
-    this.bucket = process.env.BUCKET || '';
-    this.profile = process.env.PROFILE || 'default';
-    this.projectDir = process.env.DIR || process.cwd();
-    this.projectFolder = process.env.FOLDER || '';
+    this.bucket = argv.bucket || '';
+    this.profile = argv.profile || 'default';
+    this.projectDir = argv.dir || process.cwd();
+    this.projectFolder = argv.folder || '';
   }
 
   /**
