@@ -12,7 +12,7 @@ describe('Common', () => {
     let dir = '';
 
     beforeEach(() => {
-      dir = '/Users/jazzpeh/Documents/Workspaces/hello_world/build';
+      dir = '/Users/johndoe/Documents/Workspaces/hello_world/build';
       fsmock({
         [dir]: {
           'index.html': 'hello world!',
@@ -40,7 +40,7 @@ describe('Common', () => {
       expect(files.length).toEqual(6);
     });
 
-    it('should contains absoluste paths of each file', () => {
+    it('should contains absolute paths of each file', () => {
       const files = readDir(dir);
       expect(files[0]).toContain(dir);
     });
@@ -48,6 +48,17 @@ describe('Common', () => {
     it('should not hit any errors for non-existent directory path', () => {
       const files = readDir(dir.replace('hello_world', 'not_hello_world'));
       expect(files.length).toEqual(0);
+    });
+
+    it('should ignore files from `ignoreList`', () => {
+      fsmock({
+        [dir]: {
+          'index.html': 'hello world!',
+          '.DS_Store': ''
+        }
+      });
+      const files = readDir(dir);
+      expect(files.length).toEqual(1);
     });
   });
 });
