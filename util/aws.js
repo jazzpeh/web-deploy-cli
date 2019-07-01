@@ -31,11 +31,11 @@ const convertToBucketKey = (filePath, dirPath) => {
  */
 const uploadFileToBucket = (bucketName, filePath, dirPath, successCallback, errorCallback) => {
   const s3 = new AWS.S3();
-
+  const location = convertToBucketKey(filePath, dirPath);
   const params = {
     Bucket: bucketName,
     Body: fs.createReadStream(filePath),
-    Key: convertToBucketKey(filePath, dirPath),
+    Key: location,
     ACL: 'public-read'
   };
 
@@ -48,7 +48,7 @@ const uploadFileToBucket = (bucketName, filePath, dirPath, successCallback, erro
       }
 
       if (data && typeof successCallback === 'function') {
-        successCallback(data);
+        successCallback({ ...data, location });
       }
 
       resolve(true);

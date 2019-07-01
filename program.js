@@ -167,17 +167,16 @@ class Program {
   }
 
   /**
-   * 
+   * Deploy files in concurrency mode
    */
   async deploy() {
     console.log('Starting deployment...');
 
     const uploads = this.files.map(file => 
       awsUtil.uploadFileToBucket(this.bucket, file, this.deployDir, (data) => {
-        console.log(logSymbols.info, `Successfully uploaded file to ${colors.cyan(`[${data.Location}]`)}`);
-      }, (err) => {
-        console.log(colors.red(`Error uploading file from [${file}].`));
-        console.log(colors.red(err));
+        console.log(colors.cyan('*'), `${data.location}`, logSymbols.success);
+      }, () => {
+        console.log(colors.red(`* ${file}`, logSymbols.error));
       })
     );
    
