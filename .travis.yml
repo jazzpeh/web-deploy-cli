@@ -1,8 +1,21 @@
 language: node_js
 node_js:
   - "8"
+  - "7"
+  - "6"
+
+script: echo "Running tests against $(node -v) ..."
+
 jobs:
   include:
     - stage: "Tests"                
       name: "Unit Tests"            
       script: "yarn unit"
+    - stage: npm release
+      node_js: "8"
+      script: echo "Deploying to npm ..."
+      deploy:
+        provider: npm
+        email: "jazzpehz@gmail.com"
+        api_key:
+          secure: dPzSmUUlxwx202TxTJ9W/DdzbyLGbLoEXaqkK94DUC75g1g5TBxozom2dXNAdyXynUnF889mTckr7ckV/Hlf+0zIypflbAPYnWDfQzvTe5PmE6R4lUnX34Msa7rPo3UbP6y/azAagVO6n9NoeNdzpfT2D6VNqtpQxyLWQ4ZESlBHxizs6d6PErRIn5v9t6m3Uy/iFWfRAiT/NAlGnoM1jnUEHoZxyVjbtIsa8RtlTWFokNchdx28cgmXLjMBvbmEpCv2hWKM0x+YojtJqvsJPelA61gK0l1MvQA02/CUr0oIoCqLIU5UOsqvZA/p0sB1+dM8bfqaFmTLijtJi/fz0NKnzA3RDPj71zLJqxIjvEvNPvBun9hhhoX8OocU4okl7F8n0Ln6jvryAgvozkuBJVs8B5jTutfEMqANQqGKz/bqo7bG61OqxTOHS/VaCc/iMlY9ueWwulEhvumYtu75X3cj861k9gDetFVCj1rbB7hCYXsU3hBzkqUq9Qir4vuMkIQncjkicWrNYUVX6mErnsgdbPrqzpeMHwhLmoD1O4X2QLA+hkVJJyaAxqZVZhsZ9LGb7rTkkXmIBMHFe4Z9ixeUSZFpLuG6Z3ZxHWqSp9+quH8K8qNdixzgmmWudn9oCz0suObQUvqOJ49SOX7NcF5Os0ooVPlGFYcs7XG8DQQ=
