@@ -2,6 +2,7 @@
 const AWS = require('aws-sdk');
 const fs = require('fs');
 const os = require('os');
+const mime = require('mime-types')
 
 /**
  * Credentials file path based on OS
@@ -36,7 +37,8 @@ const uploadFileToBucket = (bucketName, filePath, dirPath, successCallback, erro
     Bucket: bucketName,
     Body: fs.createReadStream(filePath),
     Key: location,
-    ACL: 'public-read'
+    ACL: 'public-read',
+    ContentType: mime.lookup(filePath) || 'application/octet-stream'
   };
 
   return new Promise((resolve, reject) => {
