@@ -9,7 +9,7 @@ const mime = require('mime-types')
  * @enum {string}
  */
 const CredentialsFilePath = {
-  WINDOWS: `${os.homedir()}\.aws\credentials`,
+  WINDOWS: `${os.homedir()}\\.aws\\credentials`,
   OSX: `${os.homedir()}/.aws/credentials`,
   LINUX: `${os.homedir()}/.aws/credentials`
 };
