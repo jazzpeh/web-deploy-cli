@@ -1,4 +1,4 @@
-const { readDir } = require('../../util/common');
+const { readDir, readJsonFile, inbetweenSquareBrackets } = require('../../util/common');
 const fsmock = require('mock-fs');
 
 /**
@@ -59,6 +59,45 @@ describe('Common', () => {
       });
       const files = readDir(dir);
       expect(files.length).toEqual(1);
+    });
+  });
+
+  /**
+   * 3. readJsonFile
+   */
+  describe('readJsonFile', () => {
+    let file = '';
+    let dir = '';
+    let data;
+
+    beforeEach(() => {
+      dir = '/Users/johndoe/Documents/Workspaces/hello_world/';
+      file = 'config.json';
+      data = { test: 'hello world' };
+      fsmock({
+        [dir]: {
+          [file]: JSON.stringify(data),
+        }
+      });
+    });
+
+    afterEach(() => {
+      fsmock.restore();
+    });
+
+    it('should read json file successfully and return a json object', async () => {
+      const result = await readJsonFile(`${dir}/${file}`);
+      expect(result).toEqual(data);
+    });
+  });
+
+  /**
+   * 4. inbetweenSquareBrackets
+   */
+  describe('inbetweenSquareBrackets', () => {
+    it('should extract text between brackets', () => {
+      const value = 'Asia (Singapore) [ap-southeast-1]';
+      expect(inbetweenSquareBrackets(value)).toEqual('ap-southeast-1');
     });
   });
 });

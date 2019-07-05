@@ -8,28 +8,34 @@ This package makes it easy to deploy static web applications. It does this by ex
 Currently it supports the following cloud deployment service:
 * AWS S3 Static Website Hosting
 
-## Contents
+## Table of Contents
 
 1. [Dependencies](#dependencies)
    * [node](#node)
 2. [Installation](#installation)
 3. [CLI Commands](#cli-commands)
     * [Deploy to AWS S3](#deploy-to-aws)
-3. [More Information](#more-information)
+4. [Release Notes](#release-notes)
+5. [Contribution](#contribution)
+    * [Getting Started](#getting-started)
+5. [More Information](#more-information)
     * [Small Print](#small-print)
-4. [MIT License](#mit-license)
+6. [License](#license)
 
 ## Dependencies
+<a name="dependencies"></a>
 
 ### Node
+<a name="node"></a>
 
-This package requires **Node >= 8.0**.
+This package requires `Node >= 8.0**`.
 
 You can install [Node.js](http://www.nodejs.org/) via the package provided on [their site](http://www.nodejs.org).
 Installing node will also install the [Node Package Manager](https://github.com/npm/npm) (NPM) to download and
 install node modules.
 
 ## Installation
+<a name="installation"></a>
 
 Installing Build Tools as a global module will give you command-line access to all tasks available.
 
@@ -39,7 +45,14 @@ You can install globally by typing the following in your terminal:
 npm install web-deploy-cli  -g
 ```
 
+To verified that it is successfully installed, run this:
+
+```
+web-deploy --version
+```
+
 ## Deploy to AWS S3
+<a name="deploy-to-aws"></a>
 
 You can use this command to deploy your static web application to AWS S3 bucket:
 
@@ -62,10 +75,52 @@ Example usage of arguments:
 web-deploy --bucket=john-doe-bucket --dir=/Users/johndoe/Projects/hello_world --folder=build
 ```
 
+## Release Notes
+<a name="release-notes"></a>
+
+Please refer to the [Github releases section for the changelog](https://github.com/jazzpeh/web-deploy-cli/releases)
+
+## Contribution
+<a name="contribution"></a>
+
+### Getting Started
+<a name="getting-started"></a>
+
+Install dependencies:
+```
+yarn install
+```
+
+Run examples:
+```
+yarn start
+```
+
+Run unit tests:
+```
+yarn unit
+```
+
+Run integration tests:
+```
+yarn integration
+```
+
+Watch unit tests:
+```
+yarn test:unit
+```
+
+Watch all tests:
+```
+yarn test
+```
 
 ## More Information
+<a name="more-information"></a>
 
 ### Small Print
+<a name="small-print"></a>
 
 Author: Jazz Peh &lt;jazzpeh@gmail.com&gt; &copy; 2019
 
@@ -77,26 +132,8 @@ Support: if you find any problems with this module, email / tweet /
 [open issue](https://github.com/jazzpeh/web-deploy-cli/issues) on Github
 
 ## MIT License
+<a name="license"></a>
 
-Copyright (c) 2019 Jazz Peh &lt;jazzpeh@gmail.com&gt;
+Copyright (c) 2019 Jazz Peh (twitter: [@jazzpeh](https://twitter.com/jazzpeh))
+Licensed under the MIT license.
 
-Permission is hereby granted, free of charge, to any person
-obtaining a copy of this software and associated documentation
-files (the "Software"), to deal in the Software without
-restriction, including without limitation the rights to use,
-copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the
-Software is furnished to do so, subject to the following
-conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-OTHER DEALINGS IN THE SOFTWARE.

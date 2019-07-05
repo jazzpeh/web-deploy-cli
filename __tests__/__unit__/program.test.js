@@ -1,6 +1,7 @@
 const Program = require('../../program');
 const pmock = require('pmock');
 const awsUtil = require('../../util/aws');
+const commonUtil = require('../../util/common');
 
 /**
  * 1. Program
@@ -94,6 +95,48 @@ describe('Program', () => {
       awsUtil.uploadFileToBucket = jest.fn(() => Promise.resolve(false));
       const result = await program.deploy();
       expect(result).toBe(false);
+    });
+  });
+
+   /**
+   * 5. displayVersion
+   */
+  describe('displayVersion', () => {
+    it('should output the version of the package in console', async () => {
+      const packageData = { version: '1.0.0' };
+      commonUtil.readJsonFile = jest.fn(() => Promise.resolve(packageData));
+      console.log = jest.fn();
+      await program.displayVersion();
+      expect(console.log.mock.calls[0][0]).toBe(packageData.version);
+    });
+  });
+
+  /**
+   * 6. checkBucketName
+   */
+  describe('checkBucketName', () => {
+    beforeEach(() => {
+      program.bucket = 'random-test-bucket';
+    });
+
+    it('should should create a new bucket since bucket doesn\'t exists', async () => {
+      program.checkBucketExist = jest.fn(() => Promise.resolve(false));
+      program.createBucketFlow = jest.fn(() => {
+        return { 
+          location: 'random', 
+          indexDoc: 'index.html',
+          errDoc: 'error.html'
+         };
+      });
+      program.createWebHostBucket = jest.fn(() => Promise.resolve(true));
+      const result = await program.checkBucketName();
+      expect(result).toBe(true);
+    });
+
+    it('should skip creating bucket if bucket exists', async () => {
+      program.checkBucketExist = jest.fn(() => Promise.resolve(true));
+      const result = await program.checkBucketName();
+      expect(result).toBe(true);
     });
   });
 });
