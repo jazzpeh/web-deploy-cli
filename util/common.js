@@ -16,6 +16,29 @@ const readDir = dir => {
   return files.filter(f => !ignoreList.includes(path.basename(f)));
 };
 
+/**
+ * Read json file and return a json object
+ * @param {string} filePath 
+ */
+const readJsonFile = filePath => {
+  return new Promise((resolve, reject) => {
+    fs.readFile(filePath, 'utf8', (err, data) => {
+      if (err) reject(err);
+      else resolve(JSON.parse(data));
+    });
+  });
+};
+
+/**
+ * Extract string between square brackets
+ * @param {String} str 
+ */
+const inbetweenSquareBrackets = str => {
+  return str.match(/\[(.*)\]/)[1];
+};
+
 module.exports = {
-  readDir
+  readDir,
+  readJsonFile,
+  inbetweenSquareBrackets
 };
