@@ -3,12 +3,12 @@ language: node_js
 jobs:
   include:
     - stage: "Tests"       
-      if: branch = master OR tag IS present
+      if: branch = master
       name: "Unit Tests"  
       node_js: "8"          
       script: "yarn unit"
     - stage: npm release
-      if: tag IS present
+      if: branch = master AND type = push
       node_js: "8"
       script: echo "Deploying to npm ..."
       deploy:

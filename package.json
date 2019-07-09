@@ -1,6 +1,6 @@
 {
   "name": "web-deploy-cli",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Easier way to deploy for web",
   "main": "cli.js",
   "scripts": {
