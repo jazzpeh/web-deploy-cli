@@ -7,6 +7,7 @@ This package makes it easy to deploy static web applications. It does this by ex
 
 Currently it supports the following cloud deployment service:
 * AWS S3 Static Website Hosting
+* Netlify
 
 ## Table of Contents
 
@@ -15,6 +16,7 @@ Currently it supports the following cloud deployment service:
 2. [Installation](#installation)
 3. [CLI Commands](#cli-commands)
     * [Deploy to AWS S3](#deploy-to-aws)
+    * [Deploy to Netlify](#deploy-to-netlify)
 4. [Release Notes](#release-notes)
 5. [Contribution](#contribution)
     * [Getting Started](#getting-started)
@@ -64,15 +66,50 @@ Arguments allowed are:
 
 | Argument | Type | Description |
 |--------|--------|--------|
+| `type` | String | The type of deployment, case-insensitive, value should be set to `aws`
 | `bucket` | String | The bucket name for AWS S3
 | `profile`| String? | The profile name for AWS credentials (if nothing is passed, `profile` will be set to `default`)
-| `dir`| String | The absolute path to your project directory (if nothing is passed, it will use the current directory of the terminal process)
+| `dir`| String? | The absolute path to your project directory (if nothing is passed, it will use the current directory of the terminal process)
 | `folder` | String? | Specify the folder that contains the built static web application `i.e. build`
 
 Example usage of arguments:
 
 ```
-web-deploy --bucket=john-doe-bucket --dir=/Users/johndoe/Projects/hello_world --folder=build
+web-deploy --type=aws --bucket=john-doe-bucket --dir=/Users/johndoe/Projects/hello_world --folder=build
+```
+
+## Deploy to Netlify
+<a name="deploy-to-netlify"></a>
+
+### Prequisite
+
+You will need to get an `access token` from your Netlify account. See [here](https://www.netlify.com/docs/cli/#obtain-a-token-in-the-netlify-ui) for more information. 
+
+Create a new file `.netlify.wdc.yml` under your project's root directory with this content:
+
+```yaml
+accessToken: <enter_your_access_token_here>
+```
+
+You can use this command to deploy your static web application to Netlify:
+
+```
+web-deploy --args=<values>
+```
+
+Arguments allowed are:
+
+| Argument | Type | Description |
+|--------|--------|--------|
+| `type` | String | The type of deployment, case-insensitive, value should be set to `netlify`
+| `siteId` | String | The site's ID (API ID, can be found under site settings in Netlify)
+| `dir`| String? | The absolute path to your project directory (if nothing is passed, it will use the current directory of the terminal process)
+| `folder` | String? | Specify the folder that contains the built static web application `i.e. build`
+
+Example usage of arguments:
+
+```
+web-deploy --type=netlify --siteId=12345678 --dir=/Users/johndoe/Projects/hello_world --folder=build
 ```
 
 ## Release Notes
@@ -109,6 +146,11 @@ yarn integration
 Watch unit tests:
 ```
 yarn test:unit
+```
+
+Watch unit integration:
+```
+yarn test:integration
 ```
 
 Watch all tests:
