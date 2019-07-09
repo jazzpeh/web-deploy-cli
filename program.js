@@ -62,7 +62,7 @@ class Program {
 
     /**
      * S3 bucket name
-     * @type {String} 
+     * @type {String}
      */
     this.bucket = '';
   }
@@ -115,14 +115,14 @@ class Program {
    */
   verifyOS() {
     console.log('Verifying system OS...');
-  
+
     this.os = this.platformOS[process.platform];
-    
+
     if (!this.os) {
       console.log(logSymbols.error, colors.red('Unsupported OS found. Exiting program...'));
       return false;
     }
-    
+
     console.log(logSymbols.success, `Supported OS ${colors.cyan(`[${this.os}]`)} found.`);
     return true;
   }
@@ -151,7 +151,7 @@ class Program {
     console.log('Checking for AWS credentials profile name...');
     awsUtil.updateProfile(this.profile);
     console.log(logSymbols.success, `AWS profile set as ${colors.cyan(`[${this.profile}]`)}.`);
-  };  
+  };
 
   /**
    * Request for absolute project path
@@ -191,7 +191,7 @@ class Program {
       if (!data) return false;
       if (!await this.createWebHostBucket(data)) return false;
     }
-    
+
     console.log(logSymbols.success, `Bucket set as ${colors.cyan(`[${this.bucket}]`)}.`);
     return true;
   }
@@ -222,7 +222,7 @@ class Program {
     });
 
     if (!confirm.create) return answers;
-    
+
     answers = await inquirer.prompt([
       {
         name: 'location',
@@ -250,22 +250,22 @@ class Program {
    */
   async createWebHostBucket(data) {
     const { location, indexDoc, errDoc } = data;
-    let result = await awsUtil.createBucket(this.bucket, commonUtil.inbetweenSquareBrackets(location), 
-      null, 
+    let result = await awsUtil.createBucket(this.bucket, commonUtil.inbetweenSquareBrackets(location),
+      null,
       (err) => console.log(logSymbols.error, colors.red(`Unable to create bucket. Failed at creating bucket...${err}`))
     );
 
     if (!result) return false;
 
-    result = await awsUtil.setBucketHosting(this.bucket, indexDoc, errDoc, 
-      null, 
+    result = await awsUtil.setBucketHosting(this.bucket, indexDoc, errDoc,
+      null,
       (err) => console.log(logSymbols.error, colors.red(`Unable to create bucket. Failed at setting hosting configurations...${err}`))
     );
 
     if (result) {
       console.log(logSymbols.success, `Bucket ${colors.cyan(`[${this.bucket}]`)} successfully created.`);
     }
-    
+
     return result;
   }
 
@@ -284,13 +284,13 @@ class Program {
   async deploy() {
     console.log('Starting deployment...');
 
-    const uploads = this.files.map(file => 
-      awsUtil.uploadFileToBucket(this.bucket, file, this.deployDir, 
-        (data) => console.log(colors.cyan('*'), `${data.location}`, logSymbols.success), 
+    const uploads = this.files.map(file =>
+      awsUtil.uploadFileToBucket(this.bucket, file, this.deployDir,
+        (data) => console.log(colors.cyan('*'), `${data.location}`, logSymbols.success),
         () => console.log(colors.red(`* ${file}`, logSymbols.error))
       )
     );
-   
+
     const results = await Promise.all(uploads);
     const successCount = results.filter(r => r).length;
     const errorCount = results.filter(r => !r).length;

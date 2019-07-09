@@ -3,7 +3,7 @@ const path = require('path');
 
 /**
  * Read all files and sub directories given a directory path
- * @param {string} dir 
+ * @param {string} dir
  */
 const readDir = dir => {
   if (!fs.existsSync(dir)) return [];
@@ -18,7 +18,7 @@ const readDir = dir => {
 
 /**
  * Read json file and return a json object
- * @param {string} filePath 
+ * @param {string} filePath
  */
 const readJsonFile = filePath => {
   return new Promise((resolve, reject) => {
@@ -31,7 +31,7 @@ const readJsonFile = filePath => {
 
 /**
  * Extract string between square brackets
- * @param {String} str 
+ * @param {String} str
  */
 const inbetweenSquareBrackets = str => {
   return str.match(/\[(.*)\]/)[1];

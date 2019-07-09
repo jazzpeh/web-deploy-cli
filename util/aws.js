@@ -18,7 +18,7 @@ const CredentialsFilePath = {
  * Convert absolute directory path to files to bucket key
  * Need to make sure that the project directory is uploaded
  * correctly to the S3 bucket
- * @param {String} dirPath 
+ * @param {String} dirPath
  * @param {String} filePath
  */
 const convertToBucketKey = (filePath, dirPath) => {
@@ -27,12 +27,12 @@ const convertToBucketKey = (filePath, dirPath) => {
 
 /**
  * Handle similar callback functions for S3 methods
- * @param {Function} resolve 
- * @param {Function} reject 
- * @param {Object} err 
- * @param {Object} data 
- * @param {Function} successCallback 
- * @param {Function} errorCallback 
+ * @param {Function} resolve
+ * @param {Function} reject
+ * @param {Object} err
+ * @param {Object} data
+ * @param {Function} successCallback
+ * @param {Function} errorCallback
  */
 const handleCallback = (resolve, reject ,err, data, successCallback, errorCallback) => {
   if (err) {
@@ -46,8 +46,8 @@ const handleCallback = (resolve, reject ,err, data, successCallback, errorCallba
 
 /**
  * Upload file in a directory into AWS S3 Bucket
- * @param {String} bucketName 
- * @param {String} filePath 
+ * @param {String} bucketName
+ * @param {String} filePath
  * @param {Function} successCallback
  * @param {Function} errorCallback
  */
@@ -81,7 +81,7 @@ const uploadFileToBucket = (bucketName, filePath, dirPath, successCallback, erro
 
 /**
  * Update AWS profile name in credentials configuration
- * @param {String} profile 
+ * @param {String} profile
  */
 const updateProfile = profile => {
   const credentials = new AWS.SharedIniFileCredentials({ profile });
@@ -90,27 +90,27 @@ const updateProfile = profile => {
 
 /**
  * Checkif the given bucketName exists
- * @param {String} bucketName 
+ * @param {String} bucketName
  */
 const bucketExist = bucketName => {
   const s3 = new AWS.S3();
   const params = {
     Bucket: bucketName
   };
-  
+
   return new Promise((resolve) => {
     s3.headBucket(params, (err) => {
       if (err) resolve(false);
       else  resolve(true);
-    });  
+    });
   });
 };
 
 /**
  * Delete existing bucket
- * @param {String} bucketName 
- * @param {Function} successCallback 
- * @param {Function} errorCallback 
+ * @param {String} bucketName
+ * @param {Function} successCallback
+ * @param {Function} errorCallback
  */
 const deleteBucket = (bucketName, successCallback, errorCallback) => {
   const s3 = new AWS.S3();
@@ -125,10 +125,10 @@ const deleteBucket = (bucketName, successCallback, errorCallback) => {
 
 /**
  * Create new bucket
- * @param {String} bucketName 
- * @param {String} location 
- * @param {Function} successCallback 
- * @param {Function} errorCallback 
+ * @param {String} bucketName
+ * @param {String} location
+ * @param {Function} successCallback
+ * @param {Function} errorCallback
  */
 const createBucket = (bucketName, location, successCallback, errorCallback) => {
   const s3 = new AWS.S3();
@@ -148,11 +148,11 @@ const createBucket = (bucketName, location, successCallback, errorCallback) => {
 
 /**
  * Set static web hosting
- * @param {String} bucketName 
- * @param {String} indexDoc 
- * @param {String} errDoc 
- * @param {Function} successCallback 
- * @param {Function} errorCallback 
+ * @param {String} bucketName
+ * @param {String} indexDoc
+ * @param {String} errDoc
+ * @param {Function} successCallback
+ * @param {Function} errorCallback
  */
 const setBucketHosting = (bucketName, indexDoc, errDoc, successCallback, errorCallback) => {
   const s3 = new AWS.S3();
