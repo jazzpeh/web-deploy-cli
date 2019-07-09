@@ -1,9 +1,10 @@
 const fs = require('fs');
 const path = require('path');
+const yaml = require('js-yaml');
 
 /**
  * Read all files and sub directories given a directory path
- * @param {string} dir
+ * @param {String} dir
  */
 const readDir = dir => {
   if (!fs.existsSync(dir)) return [];
@@ -18,13 +19,26 @@ const readDir = dir => {
 
 /**
  * Read json file and return a json object
- * @param {string} filePath
+ * @param {String} filePath
  */
 const readJsonFile = filePath => {
   return new Promise((resolve, reject) => {
     fs.readFile(filePath, 'utf8', (err, data) => {
       if (err) reject(err);
       else resolve(JSON.parse(data));
+    });
+  });
+};
+
+/**
+ * Read yaml file and return a json object
+ * @param {String} filePath 
+ */
+const readYamlFile = filePath => {
+  return new Promise((resolve, reject) => {
+    fs.readFile(filePath, 'utf8', (err, data) => {
+      if (err) reject(err);
+      else resolve(yaml.safeLoad(data));
     });
   });
 };
@@ -40,5 +54,6 @@ const inbetweenSquareBrackets = str => {
 module.exports = {
   readDir,
   readJsonFile,
+  readYamlFile,
   inbetweenSquareBrackets
 };

@@ -1,4 +1,4 @@
-const NetlifyAPI = require('netlify');
+const Netlify = require('../util/netlify');
 const BaseProgram = require('./base-program');
 
 class NetlifyProgram extends BaseProgram {
@@ -7,7 +7,7 @@ class NetlifyProgram extends BaseProgram {
 
     /**
      * Netlify API client
-     * @type {NetlifyAPI|null}
+     * @type {Netlify|null}
      * @private
      */
     this._client = null;
@@ -26,42 +26,64 @@ class NetlifyProgram extends BaseProgram {
   async run() {
     this.init();
 
-    if (!this.validateClient()) throw '';
     this.checkProjectDir();
+    if (!await this.validateClient()) throw '';
+    if (!await this.deploy()) throw '';
   }
 
   /**
     * Initialise, set argument variables
     */
    init() {
-     const { accessToken, siteId, dir, folder } = this.argv;
-     this._client = accessToken ? new NetlifyAPI(accessToken) : null;
+     const { siteId, dir, folder } = this.argv;
      this._siteId = siteId || '';
      this.projectDir = dir || process.cwd();
      this.projectFolder = folder || '';
+     this._client = this.projectDir ? new Netlify(this.projectDir) : null;
    }
 
   /**
    * Check if Netlify API client is successfully initiated
    */
-  validateClient() {
+  async validateClient() {
     console.log('Checking for Netlify client...');
     if (!this._client) {
       console.log(this.logSymbols.error, this.colors.red('Missing `--accessToken` argument...'));
       return false;
-    } else {
+    } else return await this.initClient();
+  }
+
+  /**
+   * Initialise client
+   */
+  async initClient() {
+    try {
+      await this._client.readAccessToken();
       console.log(this.logSymbols.success, 'Netlify client successfully initiated...');
       return true;
+    } catch (err) {
+      console.log(this.logSymbols.error, this.colors.red(`Unable to initiate Netlify client...${err}`));
+      return false;
     }
   }
 
+  /**
+   * Deploy
+   */
   async deploy() {
-    try {
-      const result = await this._client.deploy(this._siteId, this.deployDir);
-      console.log(result);
-    } catch (error) {
+    const spinner = this.loader('Starting deployment...').start();
 
-    }
+    const result = await this._client.deploy(this._siteId, this.deployDir, 
+      () => {
+        spinner.stop();
+        console.log(this.logSymbols.success, 'All files are successfully deployed.');
+      },
+      (err) => {
+        spinner.stop();
+        console.log(this.logSymbols.error, this.colors.red(err));
+      });
+
+    return result;
   }
 }
 

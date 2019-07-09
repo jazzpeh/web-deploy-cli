@@ -2,9 +2,9 @@
 const { convertToBucketKey } = require('../../util/aws');
 
 /**
- * AWS Utilities
+ * AWS Utility
  */
-describe('AWS Utilites', () => {
+describe('AWS Utility', () => {
   let dirPath = '';
 
   beforeEach(() => {

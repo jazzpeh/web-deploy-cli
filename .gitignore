@@ -86,4 +86,9 @@ typings/
 
 # DynamoDB Local files
 .dynamodb/
+
+# JSON configuration files
 config
+
+# Netlify configuration file
+.netlify.wdc.yml
