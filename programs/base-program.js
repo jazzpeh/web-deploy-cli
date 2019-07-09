@@ -1,6 +1,8 @@
 const colors = require('colors/safe');
 const logSymbols = require('log-symbols');
 const argv = require('yargs').argv;
+const inquirer = require('inquirer');
+const ora = require('ora');
 
 class BaseProgram {
   constructor() {
@@ -39,6 +41,18 @@ class BaseProgram {
      * @type {argv}
      */
     this.argv = argv;
+
+    /**
+     * Extend inquirer library
+     * @type {inquirer}
+     */
+    this.inquirer = inquirer;
+
+    /**
+     * Extend ora console loader library
+     * @type {ora}
+     */
+    this.loader = ora;
   }
 
   /**

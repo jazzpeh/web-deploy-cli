@@ -1,10 +1,16 @@
-const { readDir, readJsonFile, inbetweenSquareBrackets } = require('../../util/common');
+const { 
+  readDir, 
+  readJsonFile, 
+  readYamlFile,
+  inbetweenSquareBrackets
+} = require('../../util/common');
 const fsmock = require('mock-fs');
+const yaml = require('js-yaml');
 
 /**
- * 1. Common
+ * 1. Common Utility
  */
-describe('Common', () => {
+describe('Common Utility', () => {
   /**
    * 2. readDir
    */
@@ -98,6 +104,35 @@ describe('Common', () => {
     it('should extract text between brackets', () => {
       const value = 'Asia (Singapore) [ap-southeast-1]';
       expect(inbetweenSquareBrackets(value)).toEqual('ap-southeast-1');
+    });
+  });
+
+  /**
+   * 5. readYamlFile
+   */
+  describe('readYamlFile', () => {
+    let file = '';
+    let dir = '';
+    let data;
+
+    beforeEach(() => {
+      dir = '/Users/johndoe/Documents/Workspaces/hello_world/';
+      file = 'config.yml';
+      data = { test: 'hello world' };
+      fsmock({
+        [dir]: {
+          [file]: yaml.safeDump(data),
+        }
+      });
+    });
+
+    afterEach(() => {
+      fsmock.restore();
+    });
+
+    it('should read yaml file successfully an return a json object', async () => {
+      const result = await readYamlFile(`${dir}/${file}`);
+      expect(result).toEqual(data);
     });
   });
 });
